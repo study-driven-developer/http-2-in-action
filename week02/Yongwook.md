@@ -91,7 +91,24 @@
 
 ---
 
-## QUIC의 경우
+## 문제를 완화하기 위한 시도들
+
+### 혼잡 제어 알고리즘 PRR과 BBR 사용
+
+대부분의 `TCP` 구현에서는 `CUBIC` 알고리즘을 사용한다. 이 알고리즘은 패킷이 손실될 때 혼잡 제어 창을 절반으로 줄이는 것을 감소시키는 `PRR`로 강화됐다. 
+
+그리고 훨씬 더 새로운 알고리즘인 `BBR (Bottleneck Bandwidth and Roundtrip propagation time)` 은 HTTP/2 연결에 대해 성능을 더 향상시키는 것으로 확인됐다. 
+
+![](https://images.velog.io/images/dnr6054/post/7e23146b-19bf-4b12-acc1-79b57daea614/Screen%20Shot%202022-03-29%20at%2010.45.10%20PM.png)
+
+> 구글은 BBR을 적용 후 TCP 트래픽을 강화해서 전 세계 평균적으로 YouTube 네트워크 처리량을 평균 4 %, 일부 국가에서는 14 % 이상 개선했다고 한다.
+
+이 후에 BBRv2 알고리즘도 발표되었고, Youtube에 적용이 되었다. 다음과 같은 개선이 있다고 한다.
+
+- Reduced queuing delays: RTTs lower than BBR v1 and CUBIC
+- Reduced packet loss: loss rates closer to CUBIC than BBR v1
+
+### QUIC 프로토콜의 제안
 
 `QUIC(Quick UDP Internet Connections)`는 이름에서도 볼 수 있듯, `TCP`가 아닌 `UDP`위에서 자체적으로 재전송 제어 메커니즘을 구성한다.
 
